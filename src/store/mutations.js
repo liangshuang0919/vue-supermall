@@ -1,4 +1,4 @@
-import {} from 'mutations-types';
+import {} from './mutations-types';
 
 export default {
 
