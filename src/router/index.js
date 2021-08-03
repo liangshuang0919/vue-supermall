@@ -49,7 +49,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title;
+  document.title = '购物街-' + to.meta.title;
   next();
 })
 

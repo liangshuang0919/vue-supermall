@@ -20,6 +20,6 @@ export default {
   left: 0;
   width: 100%;
   height: 49px;
-  background-color: #f1efef;
+  background-color: #f6f6f6;
 }
 </style>

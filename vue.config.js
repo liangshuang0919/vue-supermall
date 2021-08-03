@@ -6,11 +6,12 @@
 //         'common': '@/common',
 //         'components': '@/components',
 //         'network': '@/network',
-//         'views': '@/views'
+//         'views': '@/views',
 //       }
 //     }
 //   }
 // }
+
 
 // 用来配置文件的别名，方便路径的寻找
 const path = require('path'); //引入path模块

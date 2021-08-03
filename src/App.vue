@@ -1,22 +1,22 @@
 <template>
   <div id='app'>
-    <main-tab-bar></main-tab-bar>
+    <main-tab-bar />
   </div>
 
   <router-view v-slot="{ Component }">
-    <keep-alive include="Home,Category,ShopCart"  exclude="Profile">
-      <component :is="Component"/>
+    <keep-alive include="Home,Category,ShopCart" exclude="Profile">
+      <component :is="Component" />
     </keep-alive>
   </router-view>
 </template>
 
 <script>
-import MainTabBar from '@/components/content/mainTabBar/MainTabBar.vue';
+import MainTabBar from '@/components/content/maintabbar/MainTabBar';
 
 export default {
   name: 'App',
   components: {
-    MainTabBar
+    MainTabBar,
   }
 }
 </script>
