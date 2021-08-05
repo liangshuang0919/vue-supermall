@@ -26,7 +26,7 @@ export default {
     TabBar,
     TabBarItem
   },
-  data() {
+  data () {
     return {
       tabBarItems: [
         {

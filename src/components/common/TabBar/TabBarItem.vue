@@ -23,15 +23,15 @@ export default {
     }
   },
   computed: {
-    isActive() {
+    isActive () {
       return !this.$route.path.includes(this.path);
     },
-    isTextActive() {
+    isTextActive () {
       return this.isActive ? {} : { color: this.textActive }
     }
   },
   methods: {
-    itemsClick() {
+    itemsClick () {
       this.$router.push(this.path)
         .catch(err => {
           console.log(err);

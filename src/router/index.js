@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+// 首页路由
 const Home = () => import("@/views/home/Home");
+// 首页内的路由
+const Popular = () => import('@/views/home/views/Popular'); // 流行
+const NewProducts = () => import('@/views/home/views/NewProducts'); // 新款
+const Selected = () => import('@/views/home/views/Selected'); // 精选
+
 const Category = () => import("../views/category/Category");
 const ShopCart = () => import("../views/cart/ShopCart");
 const Profile = () => import("../views/profile/Profile");
@@ -16,7 +22,36 @@ const routes = [
   component: Home,
   meta: {
     title: "首页",
-  }
+  },
+  children: [
+  {
+    path: "",
+    redirect: "/home/popular"
+  },
+  {
+    path: "/home/popular",
+    name: "Popular",
+    component: Popular,
+    meta: {
+      title: "首页-流行",
+    }
+  },
+  {
+    path: "/home/newproducts",
+    name: "NewProducts",
+    component: NewProducts,
+    meta: {
+      title: "首页-新款",
+    }
+  },
+  {
+    path: "/home/selected",
+    name: "Selected",
+    component: Selected,
+    meta: {
+      title: "首页-精选",
+    }
+  }, ]
 },
 {
   path: "/category",
@@ -45,7 +80,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 router.beforeEach((to, from, next) => {

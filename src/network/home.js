@@ -7,4 +7,15 @@ export function getHomeMultidata() {
   return oldRequest({
     url: '/home/multidata',
   });
-}
+};
+
+// 导出首页商品的数据
+export function getHomeGoods(type, page) {
+  return newRequest({
+    url: '/home/data',
+    params: {
+      type,
+      page
+    }
+  });
+};
