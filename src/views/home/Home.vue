@@ -1,5 +1,5 @@
 <template>
-  <div id='home'>
+  <div id='home' class="home">
     <!-- 导航组件 -->
     <nav-bar class="home-nav-bar">
       <template v-slot:center>
@@ -7,24 +7,28 @@
       </template>
     </nav-bar>
 
-    <!-- 轮播图组件 -->
-    <swiper :bannerData="bannerData" />
+    <!-- 滚动组件 -->
+    <scroll class="content">
+      <!-- 轮播图组件 -->
+      <swiper :bannerData="bannerData" />
 
-    <!-- 推荐信息组件 -->
-    <home-recommend :recommendData="recommendData" />
+      <!-- 推荐信息组件 -->
+      <home-recommend :recommendData="recommendData" />
 
-    <!-- 本周流行组件 -->
-    <home-feature />
+      <!-- 本周流行组件 -->
+      <home-feature />
 
-    <!-- 首页页面内跳转组件 -->
-    <home-tab-control class="tab-control" />
+      <!-- 首页页面内跳转组件 -->
+      <home-tab-control class="tab-control" />
+      <!-- 三个页面的路由 -->
+      <router-view v-slot="{ Component }" class="routerView" :goodsData="goodsData">
+        <keep-alive include="Popular,NewProducts,Selected">
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
+    </scroll>
   </div>
 
-  <router-view v-slot="{ Component }" class="routerView" :goodsData="goodsData">
-    <keep-alive include="Popular,NewProducts,Selected">
-      <component :is="Component" />
-    </keep-alive>
-  </router-view>
 </template>
 
 <script>
@@ -33,14 +37,16 @@
 import NavBar from '@/components/common/navbar/NavBar';
 // 导入轮播图组件
 import Swiper from '@/components/common/swiper/Swiper';
+// 导入滚动组件
+import Scroll from '@/components/common/scroll/Scroll';
 
 // 导入子组件
 // 导入推荐信息组件
 import HomeRecommend from './childComponents/HomeRecommend';
 // 导入本周流行组件
-import HomeFeature from './childComponents/HomeFeature'
+import HomeFeature from './childComponents/HomeFeature';
 // 导入首页页面内跳转组件
-import HomeTabControl from './childComponents/HomeTabControl.vue'
+import HomeTabControl from './childComponents/HomeTabControl.vue';
 
 // 导入请求
 import { getHomeMultidata, getHomeGoods } from '@/network/home';
@@ -53,6 +59,7 @@ export default {
     HomeRecommend,
     HomeFeature,
     HomeTabControl,
+    Scroll,
   },
   data () {
     return {
@@ -66,15 +73,6 @@ export default {
       },
       tabOffsetTop: 0,
     }
-  },
-  created () {
-    // 1. 请求轮播和本周流行的方法
-    this.homeMultidata();
-
-    // 2. 请求商品方法
-    this.homeGoods('pop');
-    this.homeGoods('new');
-    this.homeGoods('sell');
   },
   methods: {
     // 1. 请求轮播和本周流行的数据
@@ -100,6 +98,15 @@ export default {
         });
     }
   },
+  created () {
+    // 1. 请求轮播和本周流行的方法
+    this.homeMultidata();
+
+    // 2. 请求商品方法
+    this.homeGoods('pop');
+    this.homeGoods('new');
+    this.homeGoods('sell');
+  },
   activated () {
     this.$router.push(this.path)
   },
@@ -111,6 +118,10 @@ export default {
 </script>
 
 <style scoped>
+.home {
+  height: 100vh;
+}
+
 .home-nav-bar {
   position: sticky;
   top: 0;
@@ -124,10 +135,11 @@ export default {
 
 .tab-control {
   position: sticky;
-  top: 40px;
+  top: 44px;
 }
-/*
-.routerView {
-  bottom:  200px;
-} */
+
+.content{
+  height: calc(100% - 93px);
+  overflow: hidden;
+}
 </style>

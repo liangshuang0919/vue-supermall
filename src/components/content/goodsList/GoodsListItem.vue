@@ -25,7 +25,7 @@ export default {
         return {}
       }
     }
-  }
+  },
 }
 </script>
 
@@ -63,6 +63,7 @@ export default {
 /* 商品收藏样式 */
 .items .text .cfav {
   position: relative;
+  z-index: -1;
 }
 
 .items .text .cfav::before {

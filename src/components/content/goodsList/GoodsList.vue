@@ -1,10 +1,13 @@
 <template>
-  <div id="goods_list" class="goods-list">
-    <goods-list-item v-for="item in goodsData" :popGoodsDataItem="item" />
+  <div id="goods_list">
+    <div class="goods-list content">
+      <goods-list-item v-for="item in goodsData" :popGoodsDataItem="item" />
+    </div>
   </div>
 </template>
 
 <script>
+import BScroll from '@/main.js'
 import GoodsListItem from './GoodsListItem.vue'
 
 export default {
@@ -19,7 +22,7 @@ export default {
         return []
       }
     }
-  }
+  },
 }
 </script>
 

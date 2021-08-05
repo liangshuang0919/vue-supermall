@@ -48,6 +48,7 @@ export default {
   text-align: center;
   font-size: 16px;
   line-height: 40px;
+  background-color: #fff;
 }
 
 .tab-control-item {

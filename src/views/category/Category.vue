@@ -1,6 +1,5 @@
 <template>
-  <div id='category'>
-    <h2>分类</h2>
+  <div class="wrapper">
     <ul class="content">
       <li>分列列表1</li>
       <li>分列列表2</li>
@@ -207,23 +206,22 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll'
+
 export default {
   name: 'Category',
-  data () {
-    return {
+  mounted () {
+    new BScroll('.wrapper', {
 
-    }
+    });
   },
-  methods: {
-
-  }
 }
 </script>
 
 <style scoped>
-.content {
-  height: 150px;
+.wrapper {
+  height: 400px;
   background-color: lightcoral;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 </style>
