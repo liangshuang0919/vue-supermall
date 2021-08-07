@@ -1,5 +1,5 @@
 <template>
-  <div id="goods_list_item" class="goods-list-item">
+  <div id="goods_list_item" class="goods-list-item" @click="itemClick">
     <div class="items">
       <!-- 商品图片 -->
       <!-- @load 用于监听当前图片是否加载完毕 -->
@@ -25,6 +25,20 @@ export default {
       default () {
         return {}
       }
+    }
+  },
+  methods: {
+    itemClick () {
+      // 下面是动态路由
+      this.$router.push("/detail/" + this.popGoodsDataItem.iid);
+
+      // 下面是拼接 query 的写法
+      // this.$router.push({
+      //   path: "/detail",
+      //   query: {
+      //     id: this.popGoodsDataItem.iid
+      //   }
+      // });
     }
   },
 }

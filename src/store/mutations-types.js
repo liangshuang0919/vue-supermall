@@ -1,3 +1,4 @@
 export const types = {
-  SCROLLPOSITION: 'scrollPosition'
+  CHANGEINDEX: 'changeIndex',
+  SCROLLPOSITION: 'scrollPosition',
 }

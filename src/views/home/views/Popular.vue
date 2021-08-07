@@ -23,11 +23,6 @@ export default {
   components: {
     GoodsList
   },
-  watch: {
-    goodsData (res) {
-      console.log(res);
-    }
-  }
 }
 </script>
 

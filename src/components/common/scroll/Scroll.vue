@@ -48,19 +48,23 @@ export default {
       });
 
       // 注册滑动事件
-      this.scroll.on('scroll', (position) => {
-        // 谁调用这个函数，将 position 传给谁，用来进行回到顶部按钮的显示和隐藏
-        this.$emit('scroll', position);
-      });
+      if (this.probeType === 2 || this.probeType === 3) {
+        this.scroll.on('scroll', (position) => {
+          // 谁调用这个函数，将 position 传给谁，用来进行回到顶部按钮的显示和隐藏
+          this.$emit('scroll', position);
+        });
+      }
 
       // 注册下拉加载更多事件
-      this.scroll.on('pullingUp', () => {
-        this.$emit('pullingUp');
-        // this.scroll.finishPullUp(); // 调用再次下拉加载更多
-        this.finishPullUp(); // 调用再次下拉加载更多
-        // this.scroll.refresh(); // 每次进行下拉加载更多时，对可滚动的的区域进行重新计算，进行刷新
-        this.refresh(); // 每次进行下拉加载更多时，对可滚动的的区域进行重新计算，进行刷新
-      });
+      if (this.pullUpLoad) {
+        this.scroll.on('pullingUp', () => {
+          this.$emit('pullingUp');
+          // this.scroll.finishPullUp(); // 调用再次下拉加载更多
+          this.finishPullUp(); // 调用再次下拉加载更多
+          // this.scroll.refresh(); // 每次进行下拉加载更多时，对可滚动的的区域进行重新计算，进行刷新
+          this.refresh(); // 每次进行下拉加载更多时，对可滚动的的区域进行重新计算，进行刷新
+        });
+      }
     },
 
     // 2. 封装滚动到某一个位置的方法

@@ -7,6 +7,9 @@
       </template>
     </nav-bar>
 
+    <!-- 下面这个为了实现吸顶效果，就像障眼法 -->
+    <home-tab-control @tabControlType="homeGoodsType" ref="tabControl1" v-show="$store.state.isShowBackTop" class="tabFixed" />
+
     <!-- 滚动组件 -->
     <!-- 这里注意 :propbe-type 和 :pull-up-load 给 scroll 传值过去，因为 scroll 中是驼峰命名法，这里就要用 - 分割 -->
     <!-- 还要注意 :probe-type 和 :pull-up-load 前面要加 : ,否则传过去的是一个字符串，要进行实时监听 -->
@@ -24,7 +27,7 @@
       <!-- 下面是第一中接受孙子组件传值的方法，孙组件先传给儿子，儿子再传给我 -->
       <!-- <home-tab-control class="tab-control" @goodsType="homeGoodsType" /> -->
       <!-- 下面是第二种接收孙子组件传值的方法，直接传给爷爷组件 -->
-      <home-tab-control class="tab-control" @tabControlType="homeGoodsType" />
+      <home-tab-control @tabControlType="homeGoodsType" ref="tabControl2" />
 
       <!-- 三个页面的路由 -->
       <router-view v-slot="{ Component }" class="routerView" :goodsData="goodsData">
@@ -90,6 +93,7 @@ export default {
       // isShowBackTop: false, // 回到顶部按钮的显示或隐藏绑定的 v-show 的变量
       goodsDataTypes: ['pop', 'new', 'sell'], // 获取当前哪个被选中了，需要获取当前选中的参数，在进行下拉加载更多的时候，相应的获取数据
       goodsType: 'pop',
+      scrollTop: 0
     }
   },
   methods: {
@@ -125,7 +129,13 @@ export default {
       // 获取当前页面的商品类型，只有 流行、新品、精选 三类
       // 为了在下拉加载更多的时候，对应的获取相应的模块的数据
       this.goodsType = this.goodsDataTypes[index];
-      console.log(index);
+
+
+      // 改变 tabControl 三个按钮的状态，这里用到 vuex
+      this.$store.commit(types.CHANGEINDEX, index);
+
+      // 下面这个是为了切换三个模块的时候，让页面滚动到 tabControl 附近
+      this.$refs.scroll.scrollTo(0, -this.$refs.tabControl2.$el.offsetTop);
     },
 
     // 4. 监听回到顶部的事件
@@ -147,6 +157,8 @@ export default {
     scrollPosition (position) {
       // 这里我用到了 vuex 状态管理
       this.$store.commit(types.SCROLLPOSITION, position);
+
+      this.isFixed = this.$store.state.isFixed;
     },
 
     // 6. 监听上拉加载更多事件
@@ -166,12 +178,21 @@ export default {
     this.homeGoods('new');
     this.homeGoods('sell');
   },
+  mounted () {
+    // 1. 图片加载完成的事件监听，获取 tabControl 的 offsetTop
+    setTimeout(() => {
+      this.$store.state.tabControlOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+    }, 500);
+  },
 
   // 下面这两个方法，是用来控制当离开首页路由的时候，切换到别的路由，返回的界面为上一次浏览的界面
   activated () {
     this.$router.push(this.path);
+    // this.$refs.scroll.scrollTo(0, this.scrollTop, 0);
   },
+  //在页面离开时记录滚动位置
   beforeRouteLeave (to, from, next) {
+    this.scrollTop = this.$refs.scroll.scroll.y;
     this.path = from.path;
     next();
   }
@@ -180,6 +201,7 @@ export default {
 
 <style scoped>
 .home {
+  position: relative;
   height: 100vh;
 }
 
@@ -194,9 +216,11 @@ export default {
   color: #fff;
 }
 
-.tab-control {
-  position: sticky;
-  top: 44px;
+.tabFixed {
+  position: fixed;
+  top: 36px;
+  width: 100%;
+  z-index: 10;
 }
 
 .content{

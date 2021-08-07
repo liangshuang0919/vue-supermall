@@ -36,7 +36,11 @@ export default {
   flex: 1;
 }
 
-.home-recommend-item img{
+.home-recommend-item a {
+  color: #666;
+}
+
+.home-recommend-item a img{
   width: 70px;
   height: 70px;
   margin-top: 10px;

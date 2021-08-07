@@ -7,9 +7,10 @@ const Popular = () => import('@/views/home/views/Popular'); // 流行
 const NewProducts = () => import('@/views/home/views/NewProducts'); // 新款
 const Selected = () => import('@/views/home/views/Selected'); // 精选
 
-const Category = () => import("../views/category/Category");
-const ShopCart = () => import("../views/cart/ShopCart");
-const Profile = () => import("../views/profile/Profile");
+const Category = () => import("../views/category/Category"); // 分类的路由
+const ShopCart = () => import("../views/cart/ShopCart"); // 购物车的路由
+const Profile = () => import("../views/profile/Profile"); // 个人中心的路由
+const Detail = () => import("../views/detail/Detail"); // 商品详情页路由
 
 const routes = [
 {
@@ -58,7 +59,7 @@ const routes = [
   name: "Category",
   component: Category,
   meta: {
-    title: "分类"
+    title: "分类",
   }
 },
 {
@@ -66,7 +67,7 @@ const routes = [
   name: "ShopCart",
   component: ShopCart,
   meta: {
-    title: "购物车"
+    title: "购物车",
   }
 },
 {
@@ -74,7 +75,15 @@ const routes = [
   name: "Profile",
   component: Profile,
   meta: {
-    title: "个人中心"
+    title: "个人中心",
+  }
+},
+{
+  path: "/detail/:iid",
+  name: "Detail",
+  component: Detail,
+  meta: {
+    title: "详情页",
   }
 }];
 

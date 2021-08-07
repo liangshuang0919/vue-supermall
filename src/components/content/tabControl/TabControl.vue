@@ -1,7 +1,7 @@
 <template>
   <div id="tab_control" class="tab-control">
     <div v-for="(item, index) in tabControlData" :key="item" class="tab-control-item" @click="tabControlClick(index)">
-      <span :class="{ isActive: item.path === path }">{{ item.title }}</span>
+      <span :class="{ isActive: index === $store.state.currentIndex }">{{ item.title }}</span>
     </div>
   </div>
 </template>
@@ -20,11 +20,6 @@ export default {
   data () {
     return {
       path: this.$route.path,
-    }
-  },
-  computed: {
-    isActiveShow () {
-      return this.path === this.$route.path;
     }
   },
   methods: {
