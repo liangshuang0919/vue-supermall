@@ -19,8 +19,7 @@ export default {
   },
   data () {
     return {
-      currentIndex: 0,
-      path: "/home/popular"
+      path: this.$route.path,
     }
   },
   computed: {
@@ -30,6 +29,11 @@ export default {
   },
   methods: {
     tabControlClick (index) {
+      // 给爷爷组件传值，第一种办法是先传给父组件
+      // this.$emit('tabControlType', index);
+
+      // 给爷爷组件传值，第二种方法是先获取父组件，然后再给父组件的父组件进行传值
+      this.$parent.$emit('tabControlType', index);
       this.$router.push(this.tabControlData[index].path)
         .catch(err => {
           console.log(err);

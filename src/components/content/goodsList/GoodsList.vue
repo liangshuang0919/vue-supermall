@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import BScroll from '@/main.js'
 import GoodsListItem from './GoodsListItem.vue'
 
 export default {

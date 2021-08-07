@@ -2,6 +2,7 @@
   <div id="goods_list_item" class="goods-list-item">
     <div class="items">
       <!-- 商品图片 -->
+      <!-- @load 用于监听当前图片是否加载完毕 -->
       <img :src="popGoodsDataItem.show.img" alt="">
       <div class="text">
         <!-- 商品描述 -->

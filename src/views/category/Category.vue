@@ -212,7 +212,8 @@ export default {
   name: 'Category',
   mounted () {
     new BScroll('.wrapper', {
-
+      click: true,
+      pullUpLoad: true
     });
   },
 }
