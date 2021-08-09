@@ -3,14 +3,14 @@
     <div class="items">
       <!-- 商品图片 -->
       <!-- @load 用于监听当前图片是否加载完毕 -->
-      <img :src="popGoodsDataItem.show.img" alt="">
+      <img :src=showImg alt="">
       <div class="text">
         <!-- 商品描述 -->
-        <p>{{ popGoodsDataItem.title }}</p>
+        <p>{{ goodsDataItem.title }}</p>
         <!-- 商品价格 -->
-        <span class="price">{{ popGoodsDataItem.price }}</span>
+        <span class="price">{{ goodsDataItem.price }}</span>
         <!-- 商品收藏数 -->
-        <span class="cfav">{{ popGoodsDataItem.cfav }}</span>
+        <span class="cfav">{{ goodsDataItem.cfav }}</span>
       </div>
     </div>
   </div>
@@ -20,23 +20,28 @@
 export default {
   name: 'GoodsListItem',
   props: {
-    popGoodsDataItem: {
+    goodsDataItem: {
       type: Object,
       default () {
         return {}
       }
     }
   },
+  computed: {
+    showImg () {
+      return this.goodsDataItem.image || this.goodsDataItem.show.img;
+    }
+  },
   methods: {
     itemClick () {
       // 下面是动态路由
-      this.$router.push("/detail/" + this.popGoodsDataItem.iid);
+      this.$router.push("/detail/" + this.goodsDataItem.iid);
 
       // 下面是拼接 query 的写法
       // this.$router.push({
       //   path: "/detail",
       //   query: {
-      //     id: this.popGoodsDataItem.iid
+      //     id: this.goodsDataItem.iid
       //   }
       // });
     }

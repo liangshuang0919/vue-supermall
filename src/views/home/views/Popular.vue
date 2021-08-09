@@ -8,7 +8,6 @@
 <script>
 // 导入商品展示的组件
 import GoodsList from '@/components/content/goodsList/GoodsList'
-// import GoodsList from '@/components/content/goodsList/GoodsList.vue'
 
 export default {
   name: 'Popular',
@@ -17,7 +16,7 @@ export default {
       typs: Object,
       default () {
         return {}
-      }
+      },
     }
   },
   components: {

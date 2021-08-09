@@ -90,11 +90,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+  }
 });
 
 router.beforeEach((to, from, next) => {
   document.title = '购物街-' + to.meta.title;
   next();
-})
+});
+
 
 export default router;

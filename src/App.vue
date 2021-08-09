@@ -4,7 +4,7 @@
   </div>
 
   <router-view v-slot="{ Component }">
-    <keep-alive include="Home,Category,ShopCart" exclude="Profile">
+    <keep-alive include="Home,Category,ShopCart" exclude="Profile,Detail">
       <component :is="Component" />
     </keep-alive>
   </router-view>

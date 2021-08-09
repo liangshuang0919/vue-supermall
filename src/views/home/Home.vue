@@ -13,9 +13,9 @@
     <!-- 滚动组件 -->
     <!-- 这里注意 :propbe-type 和 :pull-up-load 给 scroll 传值过去，因为 scroll 中是驼峰命名法，这里就要用 - 分割 -->
     <!-- 还要注意 :probe-type 和 :pull-up-load 前面要加 : ,否则传过去的是一个字符串，要进行实时监听 -->
-    <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load="true" @scroll="scrollPosition" @pullingUp="loadMore">
+    <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load="true" @pullingUp="loadMore">
       <!-- 轮播图组件 -->
-      <swiper :bannerData="bannerData" />
+      <home-swiper :swiperData="swiperData" />
 
       <!-- 推荐信息组件 -->
       <home-recommend :recommendData="recommendData" />
@@ -47,14 +47,14 @@
 // 导入公共组件
 // 导入首页导航的组件
 import NavBar from '@/components/common/navbar/NavBar';
-// 导入轮播图组件
-import Swiper from '@/components/common/swiper/Swiper';
 // 导入滚动组件
 import Scroll from '@/components/common/scroll/Scroll';
-// 导入回到首页组件
+// 导入回到顶部组件
 import BackTop from '@/components/common/backtop/BackTop';
 
 // 导入子组件
+// 导入轮播图组件
+import HomeSwiper from './childComponents/HomeSwiper'
 // 导入推荐信息组件
 import HomeRecommend from './childComponents/HomeRecommend';
 // 导入本周流行组件
@@ -72,7 +72,7 @@ export default {
   name: 'Home',
   components: {
     NavBar,
-    Swiper,
+    HomeSwiper,
     HomeRecommend,
     HomeFeature,
     HomeTabControl,
@@ -82,7 +82,7 @@ export default {
   data () {
     return {
       path: "",
-      bannerData: [], // 轮播图的数据
+      swiperData: [], // 轮播图的数据
       recommendData: [], // 本周流行的数据
       goodsData: { // 商品数据
         'pop': { page: 0, list: [] },
@@ -101,7 +101,7 @@ export default {
     homeMultidata () {
       getHomeMultidata()
         .then(res => {
-          this.bannerData = res.data.banner.list;
+          this.swiperData = res.data.banner.list;
           this.recommendData = res.data.recommend.list;
         })
         .catch(err => {
@@ -168,6 +168,11 @@ export default {
       // 接口需要的参数只有三个： pop  new  sell
       this.homeGoods(this.goodsType);
     },
+
+    // 7. 页面加载出来的时候，将 tabControl 所需要的的吸顶要的距离，进行自动获取
+    setOffsetTop () {
+      this.$store.commit(types.HOMEOFFSETTOP, this.$refs.tabControl2.$el.offsetTop);
+    }
   },
   created () {
     // 1. 请求轮播和本周流行的方法
@@ -181,10 +186,9 @@ export default {
   mounted () {
     // 1. 图片加载完成的事件监听，获取 tabControl 的 offsetTop
     setTimeout(() => {
-      this.$store.state.tabControlOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+      this.setOffsetTop();
     }, 500);
   },
-
   // 下面这两个方法，是用来控制当离开首页路由的时候，切换到别的路由，返回的界面为上一次浏览的界面
   activated () {
     this.$router.push(this.path);
@@ -192,7 +196,6 @@ export default {
   },
   //在页面离开时记录滚动位置
   beforeRouteLeave (to, from, next) {
-    this.scrollTop = this.$refs.scroll.scroll.y;
     this.path = from.path;
     next();
   }

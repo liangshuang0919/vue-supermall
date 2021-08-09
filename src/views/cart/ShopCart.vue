@@ -27,6 +27,7 @@ import Pullup from '@better-scroll/pull-up'
 BScroll.use(Pullup)
 
 export default {
+  name: "ShopCart",
   data () {
     return {
       isPullUpLoad: false,

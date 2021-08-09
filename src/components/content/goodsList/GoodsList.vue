@@ -1,7 +1,7 @@
 <template>
   <div id="goods_list">
     <div class="goods-list content">
-      <goods-list-item v-for="item in goodsData" :popGoodsDataItem="item" />
+      <goods-list-item v-for="item in goodsData" :goodsDataItem="item" />
     </div>
   </div>
 </template>
