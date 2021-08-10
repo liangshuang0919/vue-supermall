@@ -9,13 +9,14 @@ const state = {
   tabControlOffsetTop: 0, // tabControl 的 offsetTop 值，来实现吸顶效果
   isDetailBackTop: false, // 详情页的回到顶部按钮是否显示隐藏
   detailOffsetTop: 0, // tabControl 的 offsetTop 值，来实现吸顶效果
+  cartList: [], // 存储添加进购物车里面的商品
 };
 
 const store = createStore({
   state: state,
-  mutations: mutations,
-  actions: actions,
-  getters: getters,
+  mutations,
+  actions,
+  getters,
   modules: {}
 });
 

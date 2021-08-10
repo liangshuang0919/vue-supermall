@@ -1,7 +1,7 @@
 <template>
   <div id="detail" class="detail">
     <!-- 详情页顶部导航组件 -->
-    <detail-nav-bar class="detail-nav" />
+    <detail-nav-bar class="detail-nav" @titleClick="titltClick" :current-index="currentIndex" />
 
     <!-- 详情页的滚动组件 -->
     <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load="true" @scroll="scrollPosition">
@@ -18,20 +18,20 @@
       <detail-goods-info :detail-info="detailInfo" ref="goodsInfo" />
 
       <!-- 详情页的商品参数信息组件 -->
-      <detail-param-info :param-info="paramInfo" />
+      <detail-param-info :param-info="paramInfo" ref="paramInfo" />
 
       <!-- 详情页用户评论组件 -->
-      <detail-comment :user-comment="userComment" />
+      <detail-comment :user-comment="userComment" ref="detailComment" />
 
       <!-- 详情页商品推荐，组件复用 -->
-      <goods-list :goodsData="goodsRecommend" />
+      <goods-list :goodsData="goodsRecommend" ref="goodsList" />
     </scroll>
 
     <!-- 回到顶部组件 -->
     <back-top @click="backTopClick" v-show="$store.state.isDetailBackTop" />
 
     <!-- 底部购物栏 -->
-    <shop-bar class="shop-bar" />
+    <detail-bottom-bar class="detail-bottom-bar" @addCart="addToCart" />
   </div>
 </template>
 
@@ -43,8 +43,6 @@ import Scroll from '@/components/common/scroll/Scroll';
 import BackTop from '@/components/common/backtop/BackTop';
 // 导入商品推荐的组件
 import GoodsList from '@/components/content/goodsList/GoodsList';
-// 导入底部购物栏
-import ShopBar from '@/components/content/shopBar/ShopBar'
 
 // 导入子组件
 // 导入顶部 detail-nav-ber
@@ -60,10 +58,12 @@ import DetailGoodsInfo from './childComponents/DetailGoodsInfo';
 // 导入商品参数信息组件
 import DetailParamInfo from './childComponents/DetailParamInfo';
 // 导入评论组件
-import DetailComment from './childComponents/DetailComment'
+import DetailComment from './childComponents/DetailComment';
+// 导入底部固定栏组件
+import DetailBottomBar from './childComponents/DetailBottomBar';
 
 // 导入 vuex 的方法
-import { types } from '@/store/mutations-types'
+import { types } from '@/store/mutations-types';
 
 // 导入接口
 // 导入商品详情接口
@@ -77,25 +77,26 @@ export default {
     Scroll, // 滚动组件
     BackTop, // 回到顶部组件
     GoodsList, // 商品推荐组件
-    ShopBar, // 底部购物栏组件
     DetailNavBar, // 详情页顶部导航
     DetailSwiper, // 详情页轮播图
     DetailBaseInfo, // 详情页商品基本信息
     DetailShopInfo, // 详情页商家基本信息
     DetailGoodsInfo, // 详情页商品详细信息
     DetailParamInfo, // 详情页商品参数信息
-    DetailComment // 详情页用户评论
+    DetailComment, // 详情页用户评论
+    DetailBottomBar // 底部固定区域
   },
   data () {
     return {
       iid: null, // 发送请求的商品 id 号
+      currentIndex: 0, // 滚动到页面的某个具体位置，传送给顶部导航子组件应该让哪一个标题显示样式
       topImages: [], // 轮播图的数据
       goods: {}, // 商品基本信息
       shop: {}, // 商家基本信息
       detailInfo: {}, // 商品详细介绍
       paramInfo: {}, // 商品参数信息
       userComment: {}, // 用户评论
-      goodsRecommend: [] // 商品推荐
+      goodsRecommend: [], // 商品推荐
     }
   },
   methods: {
@@ -118,11 +119,55 @@ export default {
     scrollPosition (position) {
       // 这里我用到了 vuex 状态管理
       this.$store.commit(types.DETAILBACKTOP, position);
+
+      // 下面是滚动页面，让上面的标题进行对应的显示样式
+      if (position.y > -this.$refs.paramInfo.$el.offsetTop) {
+        this.currentIndex = 0;
+      } else if (position.y > -this.$refs.detailComment.$el.offsetTop) {
+        this.currentIndex = 1;
+      } else if (position.y > -this.$refs.goodsList.$el.offsetTop) {
+        this.currentIndex = 2;
+      } else {
+        this.currentIndex = 3;
+      }
     },
 
     // 3. 页面加载出来的时候，需要隐藏和显示回到顶部按钮，所需要显示隐藏时候顶部的距离，进行自动获取
     setOffsetTop () {
       this.$store.commit(types.DETAILPOSITION, this.$refs.goodsInfo.$el.offsetTop);
+    },
+
+    // 4. 点击标题进行调到页面的某一个区域
+    titltClick (index) {
+      switch (index) {
+        case 0:
+          this.$refs.scroll.scrollTo(0, 0);
+          break;
+        case 1:
+          this.$refs.scroll.scrollTo(0, -this.$refs.paramInfo.$el.offsetTop);
+          break;
+        case 2:
+          this.$refs.scroll.scrollTo(0, -this.$refs.detailComment.$el.offsetTop);
+          break;
+        case 3:
+          this.$refs.scroll.scrollTo(0, -this.$refs.goodsList.$el.offsetTop);
+          break;
+      }
+    },
+
+    // 4. 点击添加到购物车
+    addToCart () {
+      // 1. 获取商品的信息（只需要获取在购物车将要展示的信息就可以）
+      const product = {};
+      product.iid = this.iid; // 商品的 id
+      product.image = this.topImages[0]; // 商品的图片
+      product.title = this.goods.title; // 商品的名字
+      product.desc = this.goods.desc; // 商品的详细描述
+      product.price = this.goods.realPrice; // 商品的最新价格
+
+      // 2. 将商品加入到购物车里面
+      // 这里用到了 vuex 里面的 actions 的异步操作
+      this.$store.dispatch('addCart', product);
     }
   },
   created () {
@@ -190,9 +235,10 @@ export default {
 
 .content {
   height: calc(100% - 99px);
+  overflow: hidden;
 }
 
-.shop-bar {
+.detail-bottom-bar {
   position: fixed;
   left: 0;
   right: 0;

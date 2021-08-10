@@ -13,7 +13,7 @@
     <!-- 滚动组件 -->
     <!-- 这里注意 :propbe-type 和 :pull-up-load 给 scroll 传值过去，因为 scroll 中是驼峰命名法，这里就要用 - 分割 -->
     <!-- 还要注意 :probe-type 和 :pull-up-load 前面要加 : ,否则传过去的是一个字符串，要进行实时监听 -->
-    <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load="true" @pullingUp="loadMore">
+    <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load="true" @pullingUp="loadMore" @scroll="scrollPosition">
       <!-- 轮播图组件 -->
       <home-swiper :swiperData="swiperData" />
 
@@ -202,32 +202,32 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .home {
   position: relative;
   height: 100vh;
-}
 
-.home-nav-bar {
-  position: sticky;
-  top: 0;
-  background-color: var(--color-tint);
-  z-index: 1;
-}
+  .home-nav-bar {
+    position: sticky;
+    top: 0;
+    background-color: var(--color-tint);
+    z-index: 1;
 
-.home-nav-bar h2{
-  color: #fff;
-}
+    h2{
+      color: #fff;
+    }
+  }
 
-.tabFixed {
-  position: fixed;
-  top: 36px;
-  width: 100%;
-  z-index: 10;
-}
+  .tabFixed {
+    position: fixed;
+    top: 36px;
+    width: 100%;
+    z-index: 10;
+  }
 
-.content{
-  height: calc(100% - 93px);
-  overflow: hidden;
+  .content{
+    height: calc(100% - 93px);
+    overflow: hidden;
+  }
 }
 </style>

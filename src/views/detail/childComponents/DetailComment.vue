@@ -61,6 +61,9 @@ export default {
 .detail-comment {
   width: 90%;
   margin: 0 auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #ddd;
 }
 
 .comment-top {
@@ -69,7 +72,7 @@ export default {
   box-sizing: border-box;
   height: 44px;
   line-height: 44px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 3px solid #ddd;
 }
 
 .user  {
@@ -117,12 +120,18 @@ export default {
   }
 }
 
-.comment-info-images {
+.flex {
+  display: flex;
+
+  .comment-info-images {
+
   img {
   	width: 60px;
   	height: 60px;
   	margin-right: 6px;
   }
 }
+}
+
 
 </style>

@@ -20,8 +20,10 @@ export default {
 }
 </script>
 
-<style scoped>
-.home-feature img {
-  width: 100%;
+<style lang="less" scoped>
+.home-feature {
+  img {
+    width: 100%;
+  }
 }
 </style>

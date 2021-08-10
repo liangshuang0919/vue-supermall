@@ -118,7 +118,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .content {
   height: 500px;
   background-color: rgba(0, 255, 255, 0.5);

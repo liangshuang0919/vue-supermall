@@ -23,14 +23,14 @@ export function getRecommend() {
 // 商品描述的信息
 export class Goods {
   constructor(itemInfo, columns, services) {
-    this.title = itemInfo.title
-    this.desc = itemInfo.desc
-    this.newPrice = itemInfo.price
-    this.oldPrice = itemInfo.oldPrice
-    this.discount = itemInfo.discountDesc
-    this.columns = columns
-    this.services = services
-    this.realPrice = itemInfo.lowNowPrice
+    this.title = itemInfo.title;
+    this.desc = itemInfo.desc;
+    this.newPrice = itemInfo.price;
+    this.oldPrice = itemInfo.oldPrice;
+    this.discount = itemInfo.discountDesc;
+    this.columns = columns;
+    this.services = services;
+    this.realPrice = itemInfo.lowNowPrice;
   }
 }
 
@@ -42,7 +42,7 @@ export class Shop {
     this.fans = shopInfo.cFans;
     this.sells = shopInfo.cSells;
     this.score = shopInfo.score;
-    this.goodsCount = shopInfo.cGoods
+    this.goodsCount = shopInfo.cGoods;
   }
 }
 

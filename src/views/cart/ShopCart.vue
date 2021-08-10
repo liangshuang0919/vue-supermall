@@ -1,105 +1,78 @@
 <template>
-  <div class="pullup">
-    <div ref="scroll" class="pullup-wrapper">
-      <div class="pullup-content">
-        <ul class="pullup-list">
-          <li v-for="i of data" :key="i" class="pullup-list-item">
-            {{ i % 5 === 0 ? 'scroll up 👆🏻' : `I am item ${i} `}}
-          </li>
-        </ul>
-        <div class="pullup-tips">
-          <div v-if="!isPullUpLoad" class="before-trigger">
-            <span class="pullup-txt">Pull up and load more</span>
-          </div>
-          <div v-else class="after-trigger">
-            <span class="pullup-txt">Loading...</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="shop-cart">
+    <!-- 导航组件 -->
+    <nav-bar class="home-nav-bar">
+      <template v-slot:center>
+        <h2>购物车( 商品总数：{{ shopCartSum }} )</h2>
+      </template>
+    </nav-bar>
+
+    <!-- 滚动组件 -->
+    <!-- 详情页的滚动组件 -->
+    <scroll class="content" ref="scroll">
+      <cart-list />
+    </scroll>
+
+    <!-- 底部结算组件 -->
+    <cart-bot-bar />
   </div>
 </template>
 
 <script>
-import BScroll from '@better-scroll/core'
-import Pullup from '@better-scroll/pull-up'
+// 导入公共组件
+// 导入顶部标题区域
+import NavBar from '@/components/common/navbar/NavBar.vue';
+// 导入滚动组件
+import Scroll from '@/components/common/scroll/Scroll';
 
-BScroll.use(Pullup)
+// 导入子组件
+// 导入商品列表
+import CartList from './childComponents/CartList';
+// 导入底部商品结算组件
+import CartBotBar from './childComponents/CartBotBar.vue';
+
+// 导入 vuex 相关的东西
+import { mapGetters } from 'vuex'; // getters 的辅助函数
 
 export default {
-  name: "ShopCart",
-  data () {
-    return {
-      isPullUpLoad: false,
-      data: 30
-    }
+  name: 'ShopCart',
+  components: {
+    NavBar,
+    CartList,
+    CartBotBar,
+    Scroll
   },
-  mounted () {
-    this.initBscroll()
+  computed: {
+    shopCartSum () {
+      return this.$store.getters.shopCartCounter + '个商品';
+    },
+    // 下面是 getters 的辅助函数
+    ...mapGetters({
+      shopCartSum: 'shopCartCounter'
+    }),
   },
-  methods: {
-    initBscroll () {
-      this.bscroll = new BScroll(this.$refs.scroll, {
-        pullUpLoad: true,
-        click: true
-      })
-
-      this.bscroll.on('pullingUp', this.pullingUpHandler)
-    },
-    async pullingUpHandler () {
-      this.isPullUpLoad = true
-
-      await this.requestData()
-
-      this.bscroll.finishPullUp()
-      this.bscroll.refresh()
-      this.isPullUpLoad = false
-    },
-    async requestData () {
-      try {
-        const newData = await this.ajaxGet(/* url */)
-        this.data += newData
-      } catch (err) {
-        // handle err
-        console.log(err)
-      }
-    },
-    ajaxGet (/* url */) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(20)
-        }, 1000)
-      })
-    }
-  }
+  activated () {
+    this.$refs.scroll.refresh();
+  },
 }
 </script>
 
-<style  scoped>
-.pullup{
-  height: 300px;
+<style lang="less" scoped>
+.shop-cart {
+  height: 100vh;
+
+  .home-nav-bar {
+    background-color: var(--color-tint);
+
+    h2 {
+      color: #fff;
+    }
+  }
+
+  .content {
+    height: calc(100vh - 141px);
+    overflow: hidden;
+  }
 }
 
-.pullup .pullup-wrapper{
-    height :100%;
-    padding: 0 10px;
-    border: 1px solid #ccc;
-    overflow :hidden;
-}
-.pullup  .pullup-list{
-  padding: 0;
-}
-
- .pullup  .pullup-list-item{
-
-    padding: 10px 0;
-    list-style: none;
-    border-bottom: 1px solid #ccc;
- }
- .pullup .pullup-tips{
-
-    padding :20px;
-    text-align :center;
-    color :#999;
- }
 </style>

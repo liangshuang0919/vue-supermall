@@ -23,26 +23,26 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .home-recommend {
   display: flex;
   width: 100%;
   border-bottom: 10px solid #eee;
   text-align: center;
   font-size: 12px;
-}
 
-.home-recommend-item {
-  flex: 1;
-}
+  .home-recommend-item {
+    flex: 1;
 
-.home-recommend-item a {
-  color: #666;
-}
+    a {
+      color: #666;
 
-.home-recommend-item a img{
-  width: 70px;
-  height: 70px;
-  margin-top: 10px;
+      img{
+        width: 70px;
+        height: 70px;
+        margin-top: 10px;
+      }
+    }
+  }
 }
 </style>

@@ -5,7 +5,7 @@
         <div id="rotation">
           <!-- ant 组件轮播 -->
           <a-carousel autoplay dotsClass="dot">
-            <div v-for="(item,index) in topImages" :key="item.acm">
+            <div v-for="(item,index) in topImages" :key="item.acm" class="box">
               <img :src="item" alt="">
             </div>
           </a-carousel>
@@ -47,7 +47,8 @@ export default {
 .ant-carousel img {
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 160%;
+  left: 50%;
+  transform: translate(-50%);
+  height: 100%;
 }
 </style>
